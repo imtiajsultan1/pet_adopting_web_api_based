@@ -1,6 +1,39 @@
 // console.log('i have it')
 //modelPoenerButton
 
+let allPets = [];
+let getLink = null;
+
+function scrollToSection() {
+    const target = document.getElementById('btn-container');
+    target.scrollIntoView({ behavior: 'smooth' });
+}
+
+function sortedFetch() {
+    if(getLink != null ){
+    fetch(getLink)
+    .then(response => response.json())
+    .then(data => {
+        allPets = data.data; 
+        sortAndDisplayPets(); 
+    });
+    }
+    else{
+        fetch('https://openapi.programming-hero.com/api/peddy/pets')
+    .then(response => response.json())
+    .then(data => {
+        allPets = data.pets; 
+        sortAndDisplayPets(); 
+    });
+    }
+}
+
+function sortAndDisplayPets(){
+    const sortedPets = [...allPets].sort((a, b) => b.price - a.price); 
+    displayPets(sortedPets); 
+}
+
+
 function loadButton(){
     fetch('https://openapi.programming-hero.com/api/peddy/categories')
         .then(response => response.json())
@@ -15,7 +48,7 @@ function displayButton(categories){
         const divContainer = document.getElementById('btn-container');
         const newDiv = document.createElement('div');
         newDiv.innerHTML = `
-            <button onclick="fetchSpecificPet('${element.category}')" class="p-4 w-[250px] flex gap-2 justify-center items-center font-bold border border-gray-500 rounded-xl">
+            <button onclick="fetchSpecificPet('${element.category}')" class="p-4 w-[150px] flex gap-2 justify-center items-center font-bold border border-gray-500 rounded-xl hover:rounded-full hover:border-[#0E7A81] hover:bg-[#f9ffff] transition ">
                 <img class="w-10 h-10" src=${element.category_icon} alt="">
                 ${element.category}
             </button>
@@ -25,6 +58,9 @@ function displayButton(categories){
 }
 
 function fetchSpecificPet(category){
+
+    getLink = `https://openapi.programming-hero.com/api/peddy/category/${category}`;  
+
     fetch(`https://openapi.programming-hero.com/api/peddy/category/${category}`)
     .then(response => response.json())
     .then(data => displayPets(data.data))
@@ -99,7 +135,11 @@ function loadPets(){
 
 
 
-function openCongoModal(){
+function openCongoModal(buttonElement){
+
+
+    buttonElement.disabled = true;
+    buttonElement.classList.add('cursor-not-allowed', 'opacity-50');
 
     document.getElementById('modelPoenerButton').click();
 
@@ -133,8 +173,22 @@ function openCongoModal(){
 // https://img.icons8.com/?size=100&id=gGUs3TPWpvgb&format=png&color=000000
 
 function displayPets(petsArr){
+
+    
     const displayDiv = document.getElementById('card-container')
     displayDiv.innerHTML = "";
+    const loadingElement = document.getElementById('loadingElement')
+    const likedDiv = document.getElementById('linked-container')
+    loadingElement.classList.remove('hidden');
+    displayDiv.classList.add('hidden');
+    likedDiv.classList.add('hidden');
+
+    setTimeout(()=>{
+        loadingElement.classList.add('hidden');
+        displayDiv.classList.remove('hidden');
+        likedDiv.classList.remove('hidden');
+    },2000)
+
     if(petsArr.length != 0){
         petsArr.forEach(element=>{
             const newCard = document.createElement('div');
@@ -154,13 +208,13 @@ function displayPets(petsArr){
             <div class="flex justify-between mt-4">
 
                 <!-- Like button -->
-                <button onclick="fetchMoveToLikeList(${element.petId})" class="px-2 py-1 border rounded-lg border-gray-300"><img class="w-4 "src="https://img.icons8.com/?size=100&id=HrULZDok3EKr&format=png&color=000000" alt=""></button>
+                <button onclick="fetchMoveToLikeList(${element.petId})" class="px-2 py-1 border rounded-lg border-gray-300 hover:bg-[#0E7A81] hover:text-white transition"><img class="w-4 "src="https://img.icons8.com/?size=100&id=HrULZDok3EKr&format=png&color=000000" alt=""></button>
 
                 <!-- Adopt -->
-                <button onclick="openCongoModal()" class="px-5 py-2 rounded-lg font-bold text-[#0E7A81] border border-gray-300">Adopt</button>
+                <button onclick="openCongoModal(this)" class=" px-2 py-1 rounded-lg font-bold text-[#0E7A81] border border-gray-300 hover:bg-[#0E7A81] hover:text-white transition">Adopt</button>
 
                 <!-- Details -->
-                <button onclick="fetchDetailsShowButton(${element.petId})" class="px-5 py-2 rounded-lg font-bold text-[#0E7A81] border  border-gray-300">Details</button>
+                <button onclick="fetchDetailsShowButton(${element.petId})" class="px-2 py-1 rounded-lg font-bold text-[#0E7A81] border  border-gray-300 hover:bg-[#0E7A81] hover:text-white transition">Details</button>
             </div>
             `
             displayDiv.appendChild(newCard)

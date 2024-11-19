@@ -30,7 +30,7 @@
                 <p class="text-xl text-gray-500 font-bold">Bringing Families Together ❤️‍🔥 </p>
                 <p class="text-5xl font-bold">Your Path to Adoption<br>Starts Here</p>
                 <p>Adopting a pet offers companionship and emotional support, helping to reduce stress and loneliness. It also gives animals a second chance at a loving home, contributing to their well-being while enhancing the adopter's sense of responsibility and fulfillment. Additionally, pets encourage an active lifestyle through walks, play, and exercise.</p>
-                <button class="px-8 py-4 bg-[#0E7A81] text-white font-bold rounded-xl">View More</button>
+                <button onclick="scrollToSection()" class="px-8 py-4 bg-[#0E7A81] text-white font-bold rounded-xl border border-gray-500 hover:bg-white hover:text-[#0E7A81] transition">View More</button>
             </div>
             <div>
                 <img src="/images/pet.webp" alt="404">
@@ -43,17 +43,21 @@
                 <p class="pb-6 text-3xl font-bold">Adopt  Your  Best Friend</p>
                 <p class="text-gray-600 px-20 pb-12">Adopting your best friend means welcoming unconditional love and loyalty into your life.</p>
             </div>
-            <div id="btn-container" class="gap-2 grid grid-cols-1 place-items-center md:grid-cols-2 lg:grid-cols-4  ">
+            <div id="btn-container" class="gap-2 grid grid-cols-1 place-items-center md:grid-cols-2 lg:grid-cols-4 ">
                 <!-- btn  -->
             </div>
         </div>
         <div class="py-8 flex justify-between items-center">
             <p class="text-xl font-bold">Best Deal For you</p>
-            <button class="px-8 py-3 bg-[#0E7A81] text-white font-bold rounded-xl">Sort by Price</button>
+            <button onclick="sortedFetch()" class="px-8 py-3 bg-[#0E7A81] text-white font-bold rounded-xl border border-gray-500 hover:bg-white hover:text-[#0E7A81] transition ">Sort by Price</button>
         </div>
         <div class="flex gap-6 flex-col lg:flex-row md:flex-row">
             <div id="card-container" class="w-3/4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 <!-- cards -->
+            </div>
+
+            <div id="loadingElement" class="hidden flex justify-center w-full p-40">
+                <span class="loading loading-dots loading-lg w-20"></span>
             </div>
 
             <!-- 
