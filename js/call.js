@@ -9,6 +9,8 @@ function scrollToSection() {
     target.scrollIntoView({ behavior: 'smooth' });
 }
 
+// fetch for sorting and call to fetch 
+
 function sortedFetch() {
     if(getLink != null ){
     fetch(getLink)
@@ -28,11 +30,14 @@ function sortedFetch() {
     }
 }
 
+// sorting logic
+
 function sortAndDisplayPets(){
     const sortedPets = [...allPets].sort((a, b) => b.price - a.price); 
     displayPets(sortedPets); 
 }
 
+// fetch buttons
 
 function loadButton(){
     fetch('https://openapi.programming-hero.com/api/peddy/categories')
@@ -43,12 +48,14 @@ function loadButton(){
 
 // {id: 1, category: 'Cat', category_icon: 'https://i.ibb.co.com/N7dM2K1/cat.png'}
 
+// displaying buttons
+
 function displayButton(categories){
     categories.forEach(element => {
         const divContainer = document.getElementById('btn-container');
         const newDiv = document.createElement('div');
         newDiv.innerHTML = `
-            <button onclick="fetchSpecificPet('${element.category}')" class="p-4 w-[150px] flex gap-2 justify-center items-center font-bold border border-gray-500 rounded-xl hover:rounded-full hover:border-[#0E7A81] hover:bg-[#f9ffff] transition ">
+            <button onclick="handleButtonClick(this,'${element.category}')" class="p-4 w-[150px] flex gap-2 justify-center items-center font-bold border border-gray-500 rounded-xl hover:rounded-full hover:border-[#0E7A81] hover:bg-[#f9ffff] transition ">
                 <img class="w-10 h-10" src=${element.category_icon} alt="">
                 ${element.category}
             </button>
@@ -56,6 +63,21 @@ function displayButton(categories){
         divContainer.appendChild(newDiv);
     });
 }
+
+function handleButtonClick(buttonElement, category) {
+    // Fetch data for the clicked category
+    fetchSpecificPet(category);
+
+    // Get all buttons inside the container
+    const allButtons = document.querySelectorAll('#btn-container button');
+
+    // Remove 'clicked' class from all buttons
+    allButtons.forEach(button => button.classList.remove('border-[#0E7A81]', 'bg-[#f9ffff]', 'rounded-full'));
+
+    // Add 'clicked' class to the clicked button
+    buttonElement.classList.add('border-[#0E7A81]', 'bg-[#f9ffff]', 'rounded-full');
+}
+
 
 function fetchSpecificPet(category){
 
